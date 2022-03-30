@@ -25,7 +25,10 @@ export default function HomePage(){
             const {data} = response;
             console.log(data);
             navigate("/hoje")
-        })
+        });
+        promise.catch(err => {
+            console.log(err.response)
+        });
     }
 
     return (
@@ -34,9 +37,11 @@ export default function HomePage(){
             <Input placeholder="Email" value={email} onChange={(e)=> setEmail(e.target.value)}></Input>
             <Input placeholder="Senha" value={senha} onChange={(e)=> setSenha(e.target.value)}></Input>
             <Link to="/hoje">
-                <Button onClick={tryLogin}>Entrar</Button>
+                <Button onClick={tryLogin}><p>Entrar</p></Button>
             </Link>
-            <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
+            <Link to="/cadastro">
+                <p>Não tem uma conta? Cadastre-se!</p>
+            </Link>
         </Main>
     )
 }
@@ -49,6 +54,17 @@ const Main = styled.div`
     align-items:center;
     padding: 0;
     margin-top:68px;
+
+    p {
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13.976px;
+        line-height: 17px;
+        text-align: center;
+        text-decoration-line: underline;
+        color: #52B6FF ;
+    }
     
 `
     
@@ -59,20 +75,48 @@ const LogoCSS = styled.img`
     
 `
 const Input = styled.input`
+    font-family: 'Lexend Deca';
     width: 303px;
     height: 45px;
     margin-bottom: 6px;
     border: 1px solid #D5D5D5;
     border-radius: 5px;
     cursor: pointer;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 19.976px;
+    line-height: 25px;
+    ::placeholder{
+        color: #DBDBDB;
+    };
 `
 
 const Button = styled.button`
+    background: #52B6FF  ;
     width: 303px;
     height: 45px;
     border-radius: 4.64px;
     margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    
     cursor: pointer;
+
+    p{
+        width: 64px;
+        height: 26px;
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 20.976px;
+        line-height: 26px;
+        text-align: center;
+        color: #FFFFFF;
+        text-decoration: none;
+    }
 `
 
 

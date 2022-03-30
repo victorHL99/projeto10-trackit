@@ -24,9 +24,15 @@ const Headerr = styled.div`
     
     
     p{
+        width: 97px;
+        height: 49px;
+        font-family: 'Playball', cursive;
         font-size:38.982px;
-        color:white;
+        font-style: normal;
+        font-weight: 400;
+        color: #FFFFFF;
         margin-left: 18px;
+        line-height: 49px;
     }
 `
 const SmallLogo = styled.img`
@@ -38,4 +44,5 @@ const SmallLogo = styled.img`
     border-radius: 98.5px;
     background: white;
     margin-right: 18px;
+    
 `

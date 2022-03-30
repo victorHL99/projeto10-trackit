@@ -1,5 +1,11 @@
+import Footer from "../App/Footer";
+import Header from "../App/Header";
+
 export default function Habits(){
     return (
-        <p>teste outra vez</p>
+        <>
+            <Header/>
+            <Footer/>
+        </>
     )
 }
