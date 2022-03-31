@@ -43,9 +43,7 @@ export default function Register(){
             <Input placeholder="Senha" value={senha} onChange={(e)=>setSenha(e.target.value)}></Input>
             <Input placeholder="Nome" value={nome} onChange={(e)=>setNome(e.target.value)}></Input>
             <Input placeholder="Foto" value={foto} onChange={(e)=>setFoto(e.target.value)}></Input>
-            <Link to="/">
-                <Button onClick={sendRegister}><p>Cadastrar</p></Button>
-            </Link>
+            <Button onClick={sendRegister}><p>Cadastrar</p></Button>
             <Link to="/"><p>Já tem uma conta? Faça login!</p></Link>
         </Main>
     )

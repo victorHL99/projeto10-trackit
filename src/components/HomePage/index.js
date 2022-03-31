@@ -28,6 +28,7 @@ export default function HomePage(){
         });
         promise.catch(err => {
             console.log(err.response)
+            alert("Dados Inválidos")
         });
     }
 
@@ -36,9 +37,7 @@ export default function HomePage(){
             <LogoCSS src={Logo} alt="Logo do TrackIt"/>
             <Input placeholder="Email" value={email} onChange={(e)=> setEmail(e.target.value)}></Input>
             <Input placeholder="Senha" value={senha} onChange={(e)=> setSenha(e.target.value)}></Input>
-            <Link to="/hoje">
-                <Button onClick={tryLogin}><p>Entrar</p></Button>
-            </Link>
+            <Button onClick={tryLogin}><p>Entrar</p></Button>
             <Link to="/cadastro">
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>
