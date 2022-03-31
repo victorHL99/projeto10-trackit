@@ -1,8 +1,10 @@
 import styled from "styled-components"
+import Loading from "./Loading"
 
 export default function Main(){
     return (
         <Mainn>
+            <Loading/>
         </Mainn>
     )
 }

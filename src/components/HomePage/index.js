@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
+import Loading from "../App/Loading";
 
 import Logo from "./../../assets/img/logo.png";
 
@@ -11,12 +12,14 @@ export default function HomePage(){
 
     const [email,setEmail] = React.useState("");
     const [senha,setSenha] = React.useState("");
-    const [ActiveButton, setActiveButton] = React.useState();
+    const [ActiveButton, setActiveButton] = React.useState(false);
+    const [LoadingSign,setLoadingSign] = React.useState("Entrar")
 
     const navigate = useNavigate();
 
     function tryLogin(){
 
+        setLoadingSign(<Loading/>)
         setActiveButton(true);
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
         const promise = axios.post(URL, {
@@ -33,6 +36,7 @@ export default function HomePage(){
             console.log(err.response)
             alert("Preencha o Email e a Senha corretamente!")
             setActiveButton(false);
+            setLoadingSign("Entrar")
         });
     }
 
@@ -41,7 +45,7 @@ export default function HomePage(){
             <LogoCSS src={Logo} alt="Logo do TrackIt"/>
             <Input placeholder="Email" disabled={ActiveButton} value={email} onChange={(e)=> setEmail(e.target.value)}></Input>
             <Input placeholder="Senha" disabled={ActiveButton} type="password" value={senha} onChange={(e)=> setSenha(e.target.value)}></Input>
-            <Button onClick={tryLogin}><p>Entrar</p></Button>
+            <Button onClick={tryLogin}><p>{LoadingSign}</p></Button>
             <Link to="/cadastro">
                 <p>Não tem uma conta? Cadastre-se!</p>
             </Link>

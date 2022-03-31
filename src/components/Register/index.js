@@ -1,9 +1,12 @@
 import React from "react";
+import axios from "axios";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 
+import Loading from "../App/Loading";
+
 import Logo from "./../../assets/img/logo.png";
-import axios from "axios";
+
 
 
 
@@ -15,11 +18,14 @@ export default function Register(){
     const [nome,setNome] = React.useState("");
     const [foto,setFoto] = React.useState("");
     const [ActiveButton,setActiveButton] = React.useState(false)
+    const [LoadingRegister,setLoadingRegister] = React.useState("Cadastrar")
+
     
     const navigate = useNavigate();
 
     function sendRegister(){
 
+        setLoadingRegister(<Loading/>)
         setActiveButton(true)
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
         const promise = axios.post(URL, {
@@ -38,6 +44,8 @@ export default function Register(){
             console.log(err.response);
             alert("Dados Inválidos, Preencha Novamente!")
             setActiveButton(false)
+            setLoadingRegister("Cadastrar")
+
         });
 
     }
@@ -50,7 +58,7 @@ export default function Register(){
             <Input placeholder="Senha" disabled={ActiveButton} value={senha} onChange={(e)=>setSenha(e.target.value)}></Input>
             <Input placeholder="Nome" disabled={ActiveButton} value={nome} onChange={(e)=>setNome(e.target.value)}></Input>
             <Input placeholder="Foto" disabled={ActiveButton} value={foto} onChange={(e)=>setFoto(e.target.value)}></Input>
-            <Button onClick={sendRegister}><p>Cadastrar</p></Button>
+            <Button onClick={sendRegister}><p>{LoadingRegister}</p></Button>
             <Link to="/"><p>Já tem uma conta? Faça login!</p></Link>
         </Main>
     )
