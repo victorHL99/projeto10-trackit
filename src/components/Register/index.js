@@ -14,10 +14,13 @@ export default function Register(){
     const [senha,setSenha] = React.useState("");
     const [nome,setNome] = React.useState("");
     const [foto,setFoto] = React.useState("");
+    const [ActiveButton,setActiveButton] = React.useState(false)
     
     const navigate = useNavigate();
 
     function sendRegister(){
+
+        setActiveButton(true)
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
         const promise = axios.post(URL, {
             email: email,
@@ -31,7 +34,11 @@ export default function Register(){
             console.log(data);
             navigate("/");
         });
-        promise.catch(err => console.log(err.response));
+        promise.catch(err => {
+            console.log(err.response);
+            alert("Dados Inválidos, Preencha Novamente!")
+            setActiveButton(false)
+        });
 
     }
 
@@ -39,10 +46,10 @@ export default function Register(){
     return (
         <Main>
             <LogoCSS src={Logo} alt="Logo do TrackIt"/>
-            <Input placeholder="Email" value={email} onChange={(e)=>setEmail(e.target.value)}></Input>
-            <Input placeholder="Senha" value={senha} onChange={(e)=>setSenha(e.target.value)}></Input>
-            <Input placeholder="Nome" value={nome} onChange={(e)=>setNome(e.target.value)}></Input>
-            <Input placeholder="Foto" value={foto} onChange={(e)=>setFoto(e.target.value)}></Input>
+            <Input placeholder="Email"  disabled={ActiveButton} value={email} onChange={(e)=>setEmail(e.target.value)}></Input>
+            <Input placeholder="Senha" disabled={ActiveButton} value={senha} onChange={(e)=>setSenha(e.target.value)}></Input>
+            <Input placeholder="Nome" disabled={ActiveButton} value={nome} onChange={(e)=>setNome(e.target.value)}></Input>
+            <Input placeholder="Foto" disabled={ActiveButton} value={foto} onChange={(e)=>setFoto(e.target.value)}></Input>
             <Button onClick={sendRegister}><p>Cadastrar</p></Button>
             <Link to="/"><p>Já tem uma conta? Faça login!</p></Link>
         </Main>
