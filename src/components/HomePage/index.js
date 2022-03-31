@@ -11,10 +11,13 @@ export default function HomePage(){
 
     const [email,setEmail] = React.useState("");
     const [senha,setSenha] = React.useState("");
+    const [ActiveButton, setActiveButton] = React.useState();
 
     const navigate = useNavigate();
 
     function tryLogin(){
+
+        setActiveButton(true);
         const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
         const promise = axios.post(URL, {
             email: email,
@@ -28,15 +31,16 @@ export default function HomePage(){
         });
         promise.catch(err => {
             console.log(err.response)
-            alert("Dados Inválidos")
+            alert("Preencha o Email e a Senha corretamente!")
+            setActiveButton(false);
         });
     }
 
     return (
         <Main>
             <LogoCSS src={Logo} alt="Logo do TrackIt"/>
-            <Input placeholder="Email" value={email} onChange={(e)=> setEmail(e.target.value)}></Input>
-            <Input placeholder="Senha" value={senha} onChange={(e)=> setSenha(e.target.value)}></Input>
+            <Input placeholder="Email" disabled={ActiveButton} value={email} onChange={(e)=> setEmail(e.target.value)}></Input>
+            <Input placeholder="Senha" disabled={ActiveButton} type="password" value={senha} onChange={(e)=> setSenha(e.target.value)}></Input>
             <Button onClick={tryLogin}><p>Entrar</p></Button>
             <Link to="/cadastro">
                 <p>Não tem uma conta? Cadastre-se!</p>
