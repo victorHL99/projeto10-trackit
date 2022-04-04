@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import UsuarioContext from "../../context/UsuarioContext";
+
 import CreateHabitsScreen from "./CreateHabitsScreen";
 
 import Trash from "./../../assets/img/lixeira.png";
@@ -120,6 +121,8 @@ export default function MainHabits(){
 
 const MainHabitss = styled.div`
     position: absolute;
+    display: flex;
+    flex-direction: column;
     width:100vw ;
     height: 527px;
     left: 0;
@@ -185,12 +188,13 @@ const TextHabits = styled.div`
 const ContainerLowHabits = styled.div`
     position: absolute;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     width: 340px;
-    height: 440px;
+    height: 425px;
     top: 77px;
     left:17px ;
+    overflow-x: hidden;
     overflow-y: scroll;
 
 

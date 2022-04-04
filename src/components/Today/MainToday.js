@@ -1,8 +1,7 @@
 import { useEffect,useContext, useState, React } from "react";
 import styled from "styled-components"
-import * as dayjs from "dayjs";
-import * as isLeapYear from "dayjs/plugin/isLeapYear";
-import 'dayjs/locale/pt-br';
+import dayjs from "dayjs";
+import axios from "axios";
 
 import UsuarioContext from "../../context/UsuarioContext";
 import Loading from "../App/Loading"
@@ -12,6 +11,9 @@ export default function Main(){
 
     const {token} = useContext(UsuarioContext);
     const [confirmTasks,setConfirmTasks] = useState(false);
+    const [habits,setHabits] = useState([]);
+    
+
 
     function DayRequest(){
         if(dayjs().day() === 1){
@@ -31,35 +33,84 @@ export default function Main(){
         }
     }
 
-
-    useEffect(() => {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
+    
+    function RenderToday(){
+        useEffect(() => {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }
-        }
+
+            const URL_GET = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today";
+            const promise = axios.get(URL_GET, config); 
+
+            promise.then(response => {
+                const {data} = response;
+                console.log(data);
+                setHabits([...habits, ...data]);
+                console.log(habits);
+            });
+
+            promise.catch(err => console.log(err.response));
+        },[token]);
     }
-    )
+
+    RenderToday();
+
+    function buildTasksToday(){
+        console.log(habits);
+        if(habits.length >0){
+
+            return(
+                <>
+                <Date>
+                    <Day>{DayRequest()}, {dayjs().format("DD/MM")} </Day>
+                    <CompletedHabits>Nenhum hábito concluído ainda</CompletedHabits>
+                </Date>
+                <HabitsContainer>
+                    {habits.map(habit => {
+                        const {id,name, done, currentSequence,highestSequence } = habit;
+                        return(
+                            <>
+                                
+                                <Habit>
+                                    <HabitName>{name}</HabitName>
+                                    <HabitDescription>
+                                        <CurrentSequence>Sequência Atual: {currentSequence} dias</CurrentSequence>
+                                        <YourRecord>Seu recorde: {highestSequence} dias</YourRecord>
+                                    </HabitDescription>
+                                    <HabitProgress confirmTasks={confirmTasks} onClick={(e) => setConfirmTasks(state =>!state)}>
+                                        <img src={Correct} alt="Imagem V de correto"/>
+                                    </HabitProgress>
+                                </Habit>
+                                </>
+                                
+                                )
+                            })}
+                    
+                    </HabitsContainer>
+                </>
+            )
+        } else {
+            return(
+                <>
+                <Date>
+                    <Day>{DayRequest()}, {dayjs().format("DD/MM")} </Day>
+                    <CompletedHabits>Nenhum hábito concluído ainda</CompletedHabits>
+                </Date>
+                <Text>
+                <p>Você não possui tarefas Hoje!</p>
+                </Text>
+                </>
+            )
+        }
+        
+    }
 
     return (
         <Mainn>
-            <Date>
-                <Day>{DayRequest()}, {dayjs().format("DD/MM")} </Day>
-                <CompletedHabits>Nenhum hábito concluído ainda</CompletedHabits>
-            </Date>
-
-            <HabitsContainer>
-                <Habit>
-                    <HabitName>Ler 1 capítulo de livro</HabitName>
-                    <HabitDescription>
-                        <CurrentSequence>Sequência Atual: 3 dias</CurrentSequence>
-                        <YourRecord>Seu recorde: 5 dias</YourRecord>
-                    </HabitDescription>
-                    <HabitProgress confirmTasks={confirmTasks} onClick={(e) => setConfirmTasks(state =>!state)}>
-                        <img src={Correct} alt="Imagem V de correto"/>
-                    </HabitProgress>
-                </Habit>
-            </HabitsContainer>
+            {buildTasksToday()}
         </Mainn>
     )
 }
@@ -110,14 +161,14 @@ const CompletedHabits = styled.p`
 `
 
 const HabitsContainer = styled.div`
-    position: absolute;
+    position: relative;
     margin-top: 28px;
     top: 107px;
     left: 18px;
     width: 340px;
     height: 340px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
     background-color: pink;
     overflow-y: auto;
@@ -191,3 +242,22 @@ const HabitProgress = styled.div`
 
 `
 
+const Text = styled.div`
+    position: absolute;
+    width: 338px;
+    height: 74px;
+    left: 15px;
+    top: 100px;
+    display: flex;
+    justify-content: center;
+
+    p{  
+        font-family: 'Lexend Deca';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 17.976px;
+        line-height: 22px;
+        color: #666666;
+    }
+
+`

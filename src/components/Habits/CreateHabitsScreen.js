@@ -15,26 +15,6 @@ export default function CreateHabitsScreen(){
     const [habitDays,setHabitDays] = React.useState([]);
     const {setShowCreateHabits,token} = useContext(UsuarioContext);
     
-    
-   /*  useEffect(() => {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-
-        const URL_GET = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
-        const promise = axios.get(URL_GET, config); // post? (URL, body, config)
-        promise.then(response => {
-            const {data} = response;
-            console.log(data);
-        });
-        promise.catch(err => console.log(err.response));
-        }, [])
-    
-
-
- */
 
     function sendHabits(){
         setShowCreateHabits(false)
