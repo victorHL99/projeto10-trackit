@@ -5,7 +5,6 @@ import { useContext } from "react";
 import UsuarioContext from "../../context/UsuarioContext";
 
 import styled from "styled-components"
-import { useEffect } from "react/cjs/react.production.min";
 
 
 
@@ -23,7 +22,6 @@ export default function CreateHabitsScreen(){
                 Authorization: `Bearer ${token}`
             }
         }
-        console.log("botão clicado")
         const URL_POST = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits"
         const promise = axios.post(URL_POST , {
             name: habitName,
@@ -33,12 +31,9 @@ export default function CreateHabitsScreen(){
     }
     
     function addDays(day){
-        console.log(habitDays);
         setHabitDays([...habitDays, day ]);
-        console.log(habitDays)
     }
 
-    console.log(habitDays)
 
     return(
 

@@ -5,7 +5,7 @@ import {Bars} from "react-loader-spinner";
 export default function Loading(){
     return (
 
-            <Bars
+            <Bars 
                 type="Bars"
                 color="#FFFFFF"
                 height={30}

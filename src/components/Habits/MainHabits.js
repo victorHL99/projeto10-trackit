@@ -26,7 +26,6 @@ export default function MainHabits(){
 
         promise.then(response => {
             const {data} = response;
-            console.log(data);
             setHabits([...habits, ...data]);
         });
 
@@ -48,7 +47,6 @@ export default function MainHabits(){
             const promise = axios.delete(URL_DELETE, config);
             promise.then(response => {
                 const {data} = response;
-                console.log(data);
                 setHabits(habits.filter(habit => habit.id !== id));
             });
             promise.catch(err => console.log(err.response));
@@ -56,7 +54,6 @@ export default function MainHabits(){
     }
     
     function buildHabits(){
-        console.log(habits);
         if(habits.length > 0){
             return(
                 <>

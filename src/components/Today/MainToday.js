@@ -4,14 +4,13 @@ import dayjs from "dayjs";
 import axios from "axios";
 
 import UsuarioContext from "../../context/UsuarioContext";
-import Loading from "../App/Loading"
 import Correct from "./../../assets/img/correct.png";
 
 export default function Main(){
 
-    const {token} = useContext(UsuarioContext);
-    const [confirmTasks,setConfirmTasks] = useState(false);
+    const {token, tasksCompleted, setTasksCompleted,totalTasks,setTotalTasks} = useContext(UsuarioContext);
     const [habits,setHabits] = useState([]);
+    
     
 
 
@@ -35,6 +34,8 @@ export default function Main(){
 
     
     function RenderToday(){
+        setTotalTasks(habits.length);
+
         useEffect(() => {
             const config = {
                 headers: {
@@ -46,27 +47,70 @@ export default function Main(){
             const promise = axios.get(URL_GET, config); 
 
             promise.then(response => {
+                setTotalTasks(habits.length);
                 const {data} = response;
-                console.log(data);
                 setHabits([...habits, ...data]);
-                console.log(habits);
             });
 
             promise.catch(err => console.log(err.response));
         },[token]);
     }
 
+
     RenderToday();
 
+
+    function markedHabit(id){
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        
+        const URL_POST = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/check`;
+        const promise = axios.post(URL_POST,{
+            done: true
+        },config);
+        promise.then(response => {
+            setTasksCompleted(tasksCompleted + 1);
+            const {data} = response;
+            setHabits(habits.filter(habit => habit.id !== id));
+            buildTasksToday();
+
+        });
+        promise.catch(err => console.log(err.response));
+    }
+
+    function markOffHabit(id){
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const URL_POST = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}/uncheck`;
+        const promise = axios.post(URL_POST,{
+            done: false
+        },config);
+        promise.then(response => {
+            setTasksCompleted(tasksCompleted - 1);
+            const {data} = response;
+            setHabits(habits.filter(habit => habit.id !== id));
+            buildTasksToday();
+
+        });
+        promise.catch(err => console.log(err.response));
+    }
+
+
     function buildTasksToday(){
-        console.log(habits);
         if(habits.length >0){
 
             return(
                 <>
                 <Date>
                     <Day>{DayRequest()}, {dayjs().format("DD/MM")} </Day>
-                    <CompletedHabits>Nenhum hábito concluído ainda</CompletedHabits>
+                    {(tasksCompleted !== 0) ? <CompletedHabits>{tasksCompleted}/{totalTasks} hábitos concluídos</CompletedHabits> : <CompletedHabits>Nenhum hábito concluído ainda</CompletedHabits>}
                 </Date>
                 <HabitsContainer>
                     {habits.map(habit => {
@@ -80,9 +124,9 @@ export default function Main(){
                                         <CurrentSequence>Sequência Atual: {currentSequence} dias</CurrentSequence>
                                         <YourRecord>Seu recorde: {highestSequence} dias</YourRecord>
                                     </HabitDescription>
-                                    <HabitProgress confirmTasks={confirmTasks} onClick={(e) => setConfirmTasks(state =>!state)}>
-                                        <img src={Correct} alt="Imagem V de correto"/>
-                                    </HabitProgress>
+                                    
+                                    {done === true ? <HabitProgressGreen onClick={()=> markOffHabit(id)}><img src={Correct} alt="Imagem V de correto"/></HabitProgressGreen> : <HabitProgressGray onClick={()=> markedHabit(id)}><img src={Correct} alt="Imagem V de correto"/></HabitProgressGray> }
+                                    
                                 </Habit>
                                 </>
                                 
@@ -97,7 +141,7 @@ export default function Main(){
                 <>
                 <Date>
                     <Day>{DayRequest()}, {dayjs().format("DD/MM")} </Day>
-                    <CompletedHabits>Nenhum hábito concluído ainda</CompletedHabits>
+                    {(tasksCompleted !== 0) ? <CompletedHabits>{tasksCompleted} dos hábitos concluídos</CompletedHabits> : <CompletedHabits>Nenhum hábito concluído ainda</CompletedHabits>}
                 </Date>
                 <Text>
                 <p>Você não possui tarefas Hoje!</p>
@@ -170,7 +214,6 @@ const HabitsContainer = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background-color: pink;
     overflow-y: auto;
 `
 
@@ -226,13 +269,29 @@ const YourRecord = styled.p`
     color: #666666;
 `
 
-const HabitProgress = styled.div`
+const HabitProgressGray = styled.div`
     position: absolute;
     width:69px;
     height: 69px;
     left: 258px;
     top: 13px;
-    background-color: ${({confirmTasks}) => confirmTasks ? '#8FC549':'#EBEBEB' };
+    background-color: #EBEBEB ;
+    border: 1px solid #E7E7E7;
+    box-sizing: border-box;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+`
+const HabitProgressGreen = styled.div`
+    position: absolute;
+    width:69px;
+    height: 69px;
+    left: 258px;
+    top: 13px;
+    background-color: #8FC549;
     border: 1px solid #E7E7E7;
     box-sizing: border-box;
     border-radius: 5px;

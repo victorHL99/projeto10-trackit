@@ -13,9 +13,11 @@ export default function App(){
     const [token, setToken] = React.useState("")
     const [picture, setPicture] = React.useState("")
     const [showCreateHabits, setShowCreateHabits] = React.useState(false);
+    const [tasksCompleted, setTasksCompleted] = React.useState(0);
+    const [totalTasks, setTotalTasks] = React.useState(0);
 
     return (
-        <UsuarioContext.Provider value={{token,setToken,picture,setPicture,showCreateHabits,setShowCreateHabits}}>
+        <UsuarioContext.Provider value={{token,setToken,picture,setPicture,showCreateHabits,setShowCreateHabits,tasksCompleted, setTasksCompleted,totalTasks,setTotalTasks}}>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<HomePage/>}/>

@@ -37,7 +37,6 @@ export default function Register(){
 
         promise.then(response => {
             const {data} = response;
-            console.log(data);
             navigate("/");
         });
         promise.catch(err => {

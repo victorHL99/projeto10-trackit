@@ -36,10 +36,7 @@ export default function HomePage(){
 
         promise.then(response => {
             const {data} = response;
-            console.log(data)
-            console.log(data.token);
             context.setToken(data.token)
-            console.log(data.image);
             context.setPicture(data.image);
 
             navigate("/hoje")

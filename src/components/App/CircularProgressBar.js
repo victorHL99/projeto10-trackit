@@ -1,13 +1,18 @@
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import { useContext } from "react";
 
+import UsuarioContext from "../../context/UsuarioContext";
 import "react-circular-progressbar/dist/styles.css"
 
 export default function CircularProgressBar(){
-    const percentage = 33;
+    const {tasksCompleted, totalTasks} = useContext(UsuarioContext);
+    const percentage = tasksCompleted;
     return (
         
         <CircularProgressbar
             value={percentage}
+            minValue={0}
+            maxValue={totalTasks}
             background
             backgroundPadding={6}
             styles={buildStyles({
