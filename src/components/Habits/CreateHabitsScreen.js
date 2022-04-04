@@ -5,6 +5,7 @@ import { useContext } from "react";
 import UsuarioContext from "../../context/UsuarioContext";
 
 import styled from "styled-components"
+import Loading from "../App/Loading";
 
 
 
@@ -13,9 +14,11 @@ export default function CreateHabitsScreen(){
     const [habitName,setHabitName] = React.useState("");
     const [habitDays,setHabitDays] = React.useState([]);
     const {setShowCreateHabits,token} = useContext(UsuarioContext);
+    const [saveButton,setSaveButton] = React.useState("Salvar");
     
 
     function sendHabits(){
+        setSaveButton(<Loading/>)
         setShowCreateHabits(false)
         const config = {
             headers: {
@@ -51,7 +54,7 @@ export default function CreateHabitsScreen(){
                 <ButtonDays onClick={(e)=> addDays(6)}>S</ButtonDays>
             </DayCreateHabits>
             <CancelButton onClick={()=>{setShowCreateHabits(false)}}>Cancelar</CancelButton>
-            <SaveButton onClick={sendHabits}>Salvar</SaveButton>
+            <SaveButton onClick={sendHabits}>{saveButton}</SaveButton>
         </ScreenHabits>
         
         <TextHabits>
