@@ -1,12 +1,16 @@
 import React from "react";
+import { useContext } from "react";
 
 import styled from "styled-components";
+import UsuarioContext from "../../context/UsuarioContext";
 
 export default function Header(){
+    const {picture} = useContext(UsuarioContext);
+
     return (
         <Headerr>
             <p>TrackIt</p>
-            <SmallLogo></SmallLogo>
+            <SmallLogo src={picture} alt="Foto do Usuario"/>
         </Headerr>
     )
 }

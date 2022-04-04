@@ -1,14 +1,20 @@
 import React from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
 
 import styled from "styled-components";
 import Loading from "../App/Loading";
 
 import Logo from "./../../assets/img/logo.png";
+import UsuarioContext from "../../context/UsuarioContext";
 
 
 export default function HomePage(){
+    const context = useContext(UsuarioContext);
+    
+    
+    
 
     const [email,setEmail] = React.useState("");
     const [senha,setSenha] = React.useState("");
@@ -16,6 +22,7 @@ export default function HomePage(){
     const [LoadingSign,setLoadingSign] = React.useState("Entrar")
 
     const navigate = useNavigate();
+    
 
     function tryLogin(){
 
@@ -29,7 +36,12 @@ export default function HomePage(){
 
         promise.then(response => {
             const {data} = response;
-            console.log(data);
+            console.log(data)
+            console.log(data.token);
+            context.setToken(data.token)
+            console.log(data.image);
+            context.setPicture(data.image);
+
             navigate("/hoje")
         });
         promise.catch(err => {
